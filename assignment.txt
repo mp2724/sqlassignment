@@ -1,0 +1,284 @@
+== CREATE DATABASE Order1;
+
+== USE Order1;
+
+== CREATE TABLE Orderitem
+   (
+   id INT not null PRIMARY KEY,
+   order_id INT not null ,
+   product_id INT not null,
+   unit_price INT not null,
+   quality decimal not null
+   );
+   CREATE INDEX indexorderitem_orderid
+   ON Orderitem (order_id);
+   CREATE INDEX indexorderitem_productid
+   ON Orderitem (product_id);
+
+== INSERT INTO orderitem VALUES
+   (1,21, 247, 345,1),
+   (2,25, 277, 362,1.5),
+   (3,53, 987, 542,9.2),
+   (4,82,456,927,10.9);
+
+== SELECT *FROM orderitem;
+
+
+== CREATE TABLE product
+   (
+   id INT not null PRIMARY KEY,
+   productname NVARCHAR(50) not null,
+   unitprice DECIMAL not null,
+   package NVARCHAR(50) not null,
+   isdiscontinued BIT
+   );
+   CREATE INDEX indexproduct_supplierid
+   ON product (id);
+   CREATE INDEX indexproductname
+   ON product (productname);
+
+== INSERT INTO product VALUES
+   (247 , 'laptop', 345 ,'hyderabad', 1);
+   (277 , 'mobile', 362 ,'pune',0),
+   (987 , 'telephone', 542 ,'nagpur',1),
+   (456 , 'bottle', 927 ,'chennai',1);
+
+== SELECT *FROM product;
+
+== CREATE TABLE order1
+   (
+   orderid INT not null PRIMARY KEY,
+   order_date DATE not null,
+   order_number NVARCHAR(50) not null,
+   customer_id INT not null,
+   total_amount DECIMAL not null
+   );
+   CREATE INDEX indexorder_customer_id
+   ON order1 (customer_id);
+   CREATE INDEX indexorder_orderdate
+   ON order1 (order_date);
+
+== INSERT INTO order1 VALUES
+   (21, '2008-12-23' , '6yu' , 87, 3489),
+   (25, '2010-1-3' , 'me456' , 39, 58785),
+   (53, '2010-3-31' , 'jsdhk7' , 94, 85734),
+   (82, '2015-6-24' , 'jaskuik9' , 75,9867); 
+
+== SELECT *FROM order1;
+
+== create table customer 
+   (
+   customer_id int not null primary key,
+   first_name nvarchar(50) not null,
+   last_name nvarchar(50) not null,
+   city nvarchar(50) not null,
+   country nvarchar(50) not null,
+   phone_number nvarchar(50) not null
+   );
+
+== INSERT INTO customer VALUES 
+   (87 ,'pathipaka' ,'pathipaka','mumbai','india','1234567890'),
+   (39 ,'kunika' ,'gulab','pune','india','0987654321') , 
+   (94, 'vijin', 'vm','chennai','india','2345671890'),
+   (75, 'jagruthi','patil','nagpur','india','9876501234');
+
+== SELECT *FROM customer;
+
+
+write a query to display Country whose name starts with A or I
+== SELECT * FROM customer
+   WHERE (country Like 'i%') OR (country like 'a%');
+
+
+write a query to display whose name of customer whose third character is i
+== SELECT * FROM customer
+   WHERE first_name like '__i%';
+
+
+ASSAINMENT 2
+
+Display the details from Customer table who is from country Germany
+== SELECT * FROM customer
+   WHERE country ='germany';
+
+
+== CREATE TABLE employee
+   (
+   id INT NOT NULL PRIMARY KEY,
+   Empname NVARCHAR(50),
+   depid int,
+   rating DECIMAL NOT NULL,
+   mid int
+   );
+== creatre table manager
+   (
+   mid int not null primary key,
+   name nvarchar(50)
+   );
+== creatre table department
+   (
+   id int not null primary key,
+   name nvarchar(50)
+   );
+
+Display the  full name of the employee  
+== SELECT empname FROM employee;
+
+Display the  customer details  who has Fax number
+== SELECT * FROM customer 
+   WHERE faxnumber IS NOT NULL
+
+display the customer details whose name holds second letter as U
+== SELECT * FROM customer 
+   WHERE first_name like '_u%';
+
+select order Details where unit price is greater than 10 and less than 20
+== SELECT * FROM orderitem,order1
+   WHERE order1.orderid=Orderitem.order_id AND (unit_price BETWEEN 10 AND 20)
+
+Print the orders shipped by ship name 'La corned'abondance' between 2 dates(Choose dates of your choice)
+== SELECT * FROM order1
+   WHERE (order_date BETWEEN '2000-10-25' AND '2005-2-10') AND shipname = 'La corned'abondance';
+
+Print the products supplied by 'Exotic Liquids' Display order details which contains shipping date and arrange the order by date
+== SELECT * FROM product,orderitem,order1
+   WHERE (product.id=orderitem.product_id AND orderitem.order_id=order1.orderid) AND (ORDER BY DATE);
+
+print the average quantity ordered for every product
+== SELECT AVG(quantity)as avg,name
+   FROM orderitem left join product
+   on orderitem.id=product.id
+   group by name
+
+Print all the Shipping company name and the ship names if they are operational
+==
+
+Print all Employees with Manager Name
+== SELECT employeename,manager_name FROM employee;
+
+Print the bill for a given order id .bill should contain Productname, Categoryname,price after discount
+==
+
+Print the Total price of orders which have the products supplied by 'Exotic Liquids' if the price is > 50 and also print it by Shipping company's Name
+== select sum (price)
+from order inner join orderitem inner join product
+on orders.oid=orderitem.oid and orderitem.pid = product.id
+where name='exotic liquids';
+
+
+
+ASSAINMENT 3
+
+CREATE TABLE order1
+(
+id INT NOT NULL PRIMARY KEY,
+product NVARCHAR (50),
+country NVARCHAR (50),
+emp_id INT NOT NULL,
+cus_id INT NOT NULL
+);
+
+INSERT INTO Order1 VALUES ( 18, 'fish', 'mumbai' , 36, 45),( 19, 'sea food', 'pune' , 06, 95) ,(46 ,'sea food' ,'hyd',90,64);
+
+CREATE TABLE employee
+(
+id INT NOT NULL PRIMARY KEY,
+Empname NVARCHAR(50),
+depname NVARCHAR(50),
+rating DECIMAL NOT NULL
+);
+INSERT INTO employee VALUES ( 67,'PRATHYUSHA','ABC',3.5),(8,'PRANAY','BDC',4),(83,'AKHILA','IOP',3);
+
+CREATE TABLE customer
+(
+Id INT NOT NULL PRIMARY KEY,
+cus_name NVARCHAR(50) ,
+phone NVARCHAR(50) NOT NULL,
+);
+
+INSERT INTO customer VALUES ( 3,'KUNIKA','1234567890'),( 64,'KUNIKA','1234567890'),(5,'MANOJ','9876543021');
+
+write a query to display the orders placed by customer with phone number 030-0074321
+== SELECT * FROM customer,order1
+   WHERE order1.cus_id =customer.id AND customer.phone ='030-0074321';
+
+fetching all the products which are available under Category ‘Seafood’.
+== SELECT * FROM order1
+   WHERE product = 'sea food';
+
+Display the orders placed by customers not in London
+== SELECT * FROM order1
+   WHERE country != 'London';
+
+selects all the order which are placed for the product Chai
+== SELECT * FROM order1
+   WHERE product = 'chai';
+
+Write a query to display the name , department name and rating  of any given employee
+== SELECT empname,depname,rating FROM employee;
+
+
+
+ASSIGNMENT 4
+
+
+Display the employee details whose joined at first
+== SELECT TOP 1 * FROM employee ORDER BY joined_date ;
+
+Display the employee details whose joined at recently
+== SELECT TOP 1 * FROM employee ORDER BY joined_date DESC ;
+
+Write a query to get most expense and least expensive Product list (name and unit price).
+== SELECT top 1 unitprice ,name 
+from product
+order by unitprice;
+
+Display the list of products that are out of stock
+== SELECT * FROM product,orderitem
+   WHERE product.id=orderitem.product_id AND quantity IS NULL;
+
+Display complete list of customers,the orderid and date of any other they have made
+== select *,oid,orderdate
+from orders inner join customer
+on orders.id=customer.id;
+
+write query that determines the customer who has placed the max no. of orders
+== select id ,fname,max(ordernumber)
+from orders inner join customer
+on orders.id = customer.id;
+
+display the cutomerid whose name has substring 'ra'
+==select id from customer 
+where substring (fname,len(fname),2)='ra';
+
+display the first word of all company name 
+==select name
+from emp 
+where substring(name,len(name),2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
